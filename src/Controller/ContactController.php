@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Contact;
 use App\Form\ContactType;
+use Swift_Mailer;
+use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +22,7 @@ class ContactController extends AbstractController {
      * @Route("/contact", name="contact")
      * @return Response
      */
-    public function index(Request $request, \Swift_Mailer $mailer): Response {
+    public function index(Request $request, Swift_Mailer $mailer): Response {
         $contact = new Contact();
         $formContact = $this->createForm(ContactType::class, $contact);
         $formContact->handleRequest($request);
@@ -35,8 +37,8 @@ class ContactController extends AbstractController {
         ]);
     }
 
-    public function envoiMail(\Swift_Mailer $mailer, Contact $contact) {
-        $message = (new \Swift_Message('Message du site de voyages'))
+    public function envoiMail(Swift_Mailer $mailer, Contact $contact) {
+        $message = (new Swift_Message('Message du site de voyages'))
                 ->setFrom($contact->getEmail())
                 ->setTo('contact@mesvoyages.fr')
                 ->setBody(
