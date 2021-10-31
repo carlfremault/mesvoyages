@@ -33,6 +33,20 @@ class VisiteRepository extends ServiceEntityRepository
     }
     
     /**
+     * Retourne les deux dernières visites
+     * @param type $nombre
+     * @return Visite[]
+     */
+    public function findMostRecent($nombre): array {
+        return $this->createQueryBuilder('v')
+           ->orderBy('v.datecreation', 'DESC')
+           ->setMaxResults($nombre)     
+           ->getQuery()
+           ->getResult();
+    }
+    
+    
+    /**
      * Enregistrements dont un champ est égal à une valeur
      * ou tous les enregistrements si la valeur est vide
      * @param type $champ

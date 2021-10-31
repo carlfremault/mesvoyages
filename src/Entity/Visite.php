@@ -3,6 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\VisiteRepository;
+use DateTime;
+use DateTimeImmutable;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -36,11 +39,13 @@ class Visite
 
     /**
      * @ORM\Column(type="date", nullable=true)
+     * @Assert\LessThanOrEqual("now")
      */
     private $datecreation;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Assert\Range(min=0, max=20)
      */
     private $note;
 
@@ -56,6 +61,7 @@ class Visite
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Assert\GreaterThan(propertyPath="tempmin")
      */
     private $tempmax;
 
@@ -119,7 +125,7 @@ class Visite
         return $this;
     }
 
-    public function getDatecreation(): ?\DateTimeInterface
+    public function getDatecreation(): ?DateTimeInterface
     {
         return $this->datecreation;
     }
@@ -129,7 +135,7 @@ class Visite
         return $this->datecreation->format('d/m/Y');
     }
 
-    public function setDatecreation(?\DateTimeInterface $datecreation): self
+    public function setDatecreation(?DateTimeInterface $datecreation): self
     {
         $this->datecreation = $datecreation;
 
@@ -219,7 +225,7 @@ class Visite
     public function setImageFile(?File $imageFile):self {
         $this->imageFile = $imageFile;
         if($this->imageFile instanceof UploadedFile) {
-            $this->updated_at = new \DateTime('now');
+            $this->updated_at = new DateTime('now');
         }
         return $this;
     }
@@ -229,12 +235,12 @@ class Visite
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeImmutable
+    public function getUpdatedAt(): ?DateTimeImmutable
     {
         return $this->updated_at;
     }
 
-    public function setUpdatedAt(?\DateTimeImmutable $updated_at): self
+    public function setUpdatedAt(?DateTimeImmutable $updated_at): self
     {
         $this->updated_at = $updated_at;
 
