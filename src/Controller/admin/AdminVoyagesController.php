@@ -29,6 +29,11 @@ class AdminVoyagesController extends AbstractController{
     private $om;
     
     /**
+     * @var string 
+     */
+    private $adminVoyagesRoute = "admin.voyages";
+    
+    /**
      * @param VisiteRepository $repository
      * @param EntityManagerInterface $om
      */
@@ -56,7 +61,7 @@ class AdminVoyagesController extends AbstractController{
     public function suppr(Visite $visite):Response {
         $this->om->remove($visite);
         $this->om->flush();
-        return $this->redirectToRoute('admin.voyages');
+        return $this->redirectToRoute($this->adminVoyagesRoute);
     }
     
     /**
@@ -70,7 +75,7 @@ class AdminVoyagesController extends AbstractController{
         $formVisite->handleRequest($request);
         if($formVisite->isSubmitted() && $formVisite->isValid()) {
             $this->om->flush();
-            return $this->redirectToRoute('admin.voyages');
+            return $this->redirectToRoute($this->adminVoyagesRoute);
         }
         return $this->render("admin/admin.voyage.edit.html.twig", [
             'visite'=>$visite,
@@ -90,7 +95,7 @@ class AdminVoyagesController extends AbstractController{
         if($formVisite->isSubmitted() && $formVisite->isValid()) {
             $this->om->persist($visite);
             $this->om->flush();
-            return $this->redirectToRoute("admin.voyages");
+            return $this->redirectToRoute($this->adminVoyagesRoute);
         }
         return $this->render("admin/admin.voyage.ajout.html.twig", [
             'visite'=>$visite,

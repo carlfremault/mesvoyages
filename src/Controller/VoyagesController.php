@@ -19,7 +19,12 @@ class VoyagesController extends AbstractController {
      * @var VisiteRepository
      */
     private $repository;
-     
+    
+    /**
+     * @var string 
+     */
+    private $voyagePath = "pages/voyages.html.twig";
+    
     /**
      * 
      * @param VisiteRepository $repository
@@ -34,7 +39,7 @@ class VoyagesController extends AbstractController {
      */
     public function index(): Response {
         $visites = $this->repository->findAllOrderBy('datecreation', 'DESC');
-        return $this->render("pages/voyages.html.twig", [
+        return $this->render($this->voyagePath, [
             'visites'=>$visites
         ]);
     }
@@ -47,7 +52,7 @@ class VoyagesController extends AbstractController {
      */
     public function sort($champ, $ordre):Response {
         $visites = $this->repository->findAllOrderBy($champ, $ordre);
-        return $this->render("pages/voyages.html.twig", [
+        return $this->render($this->voyagePath, [
             'visites'=>$visites
         ]);
     }
@@ -62,7 +67,7 @@ class VoyagesController extends AbstractController {
         if($this->isCsrfTokenValid('filtre_'.$champ, $request->get('_token'))) {
         $valeur = $request->get("recherche");
         $visites = $this->repository->findByEqualValue($champ, $valeur);
-        return $this->render("pages/voyages.html.twig", [
+        return $this->render($this->voyagePath, [
             'visites'=>$visites
         ]);
         }
